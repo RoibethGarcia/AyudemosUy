@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.api.mapper;
+package edu.udelar.ayudemos.distribucion.api.mapper;
 
 import edu.udelar.ayudemos.distribucion.api.dto.DistribucionCreateRequest;
 import edu.udelar.ayudemos.distribucion.api.dto.DistribucionResponse;

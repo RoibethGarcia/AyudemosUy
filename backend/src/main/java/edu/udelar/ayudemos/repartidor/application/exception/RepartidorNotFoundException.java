@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.repartidor.application.exception;
+package edu.udelar.ayudemos.repartidor.application.exception;
 
 public class RepartidorNotFoundException extends RuntimeException {
 

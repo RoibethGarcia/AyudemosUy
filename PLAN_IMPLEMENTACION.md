@@ -1,198 +1,105 @@
-# 📋 Plan de Implementación - Ayudemos.uy
+# Plan de Implementación - Ayudemos.uy
 
-## 🎯 Objetivo
-Desarrollar un sistema completo de gestión de donaciones usando **Spring Boot** (backend) y **React** (frontend), migrando el proyecto académico original de Swing a una arquitectura moderna REST API + SPA.
+## Objetivo
 
----
-
-## 📅 Roadmap (8-10 semanas)
-
-### **FASE 1: Backend Base (Semanas 1-3)**
-
-#### Semana 1: Configuración y Entidades
-- ✅ Crear estructura del proyecto Spring Boot
-- ✅ Definir entidades del dominio (Usuario, Beneficiario, Repartidor, Donación, Distribución)
-- ✅ Configurar base de datos MySQL
-- ✅ Configurar Hibernate/JPA
-
-**Entregable:** Proyecto compilando y conectando a BD
-
-#### Semana 2: Repositorios y Servicios
-- Crear repositorios Spring Data para todas las entidades
-- Implementar servicios con lógica de negocio
-- Validaciones de negocio (email único, etc.)
-
-**Entregable:** Capa de servicios completa
-
-#### Semana 3: Controladores REST
-- Implementar endpoints REST para:
-  - ✅ POST /api/usuarios (Alta de Usuario)
-  - ✅ POST /api/donaciones (Alta de Donación)
-  - ✅ POST /api/distribuciones (Alta de Distribución)
-  - ✅ PUT /api/distribuciones/{id} (Modificar Distribución)
-  - ✅ GET /api/beneficiarios (Listar Beneficiarios)
-  - ✅ GET /api/distribuciones?estado={estado} (Listar por Estado)
-
-**Entregable:** API REST funcional con todos los requerimientos mínimos
+Desarrollar un sistema completo de gestión de donaciones usando Spring Boot en `backend/` y React en `web/`, manteniendo una arquitectura API REST + SPA.
 
 ---
 
-### **FASE 2: Backend Avanzado (Semanas 4-5)**
-
-#### Semana 4: Funcionalidades Especiales
-- Implementar endpoints adicionales:
-  - GET /api/beneficiarios?zona={zona}
-  - GET /api/beneficiarios?estado={estado}
-  - PUT /api/usuarios/{id}
-  - PUT /api/donaciones/{id}
-  - GET /api/distribuciones?zona={zona}
-  - GET /api/reportes/zonas-mayor-distribuciones
-
-**Entregable:** API completa con requerimientos especiales
-
-#### Semana 5: Mejoras y Testing
-- Manejo de excepciones global
-- Validaciones mejoradas
-- Pruebas unitarias básicas
-- Documentación de API (Swagger/OpenAPI)
-
-**Entregable:** Backend robusto y documentado
-
----
-
-### **FASE 3: Frontend React (Semanas 6-8)**
-
-#### Semana 6: Setup y Componentes Base
-- Crear proyecto React con Vite/CRA
-- Configurar React Router
-- Configurar Axios para consumo de APIs
-- Crear componentes base (Layout, Navbar, etc.)
-- Implementar sistema de rutas
-
-**Entregable:** Frontend básico funcionando
-
-#### Semana 7: CRUD de Entidades Principales
-- Componente de Alta de Usuario/Beneficiario
-- Componente de Alta de Donación
-- Componente de Alta de Distribución
-- Componente de Listado de Beneficiarios
-- Componente de Listado de Distribuciones (con filtros)
-
-**Entregable:** CRUD completo de requerimientos mínimos
-
-#### Semana 8: Funcionalidades Avanzadas y UI/UX
-- Implementar filtros y búsquedas
-- Mejorar UI con componentes modernos
-- Manejo de estados de carga y errores
-- Formularios con validación
-- Reportes y visualizaciones
-
-**Entregable:** Frontend completo y funcional
-
----
-
-### **FASE 4: Integración y Deploy (Semanas 9-10)**
-
-#### Semana 9: Integración Completa
-- Conectar frontend con backend
-- Probar flujos completos end-to-end
-- Ajustes de CORS y configuración
-- Optimizaciones de rendimiento
-
-**Entregable:** Sistema completo integrado
-
-#### Semana 10: Documentación y Deploy
-- Crear README completo
-- Documentar APIs
-- Preparar para deploy (Docker opcional)
-- Crear presentación del proyecto
-
-**Entregable:** Proyecto listo para portfolio
-
----
-
-## 🛠️ Tecnologías por Fase
+## Estado verificado a la fecha
 
 ### Backend
-- **Java 17**
-- **Spring Boot 3.x**
-- **Spring Data JPA**
-- **MySQL**
-- **Maven**
-- **Lombok** (opcional)
+
+- ✅ Monorepo consolidado
+- ✅ Features cerradas para:
+  - usuarios base
+  - beneficiarios
+  - donaciones
+  - distribuciones
+  - repartidores
+  - reportes por zonas con mayor número de distribuciones
+- ✅ Manejo global de errores
+- ✅ Tests unitarios y web tests presentes en varias features
+- ⚠️ Falta verificación ejecutable del wrapper y de la suite completa cuando se habilite correr comandos de validación
 
 ### Frontend
-- **React 18+**
-- **TypeScript** (recomendado)
-- **React Router**
-- **Axios**
-- **Tailwind CSS** o **Material-UI** (para UI)
+
+- ✅ `web/` inicializado con React 18 + TypeScript + Vite
+- ✅ React Router configurado
+- ✅ Cliente Axios base configurado
+- ✅ Layout principal y páginas semilla por feature
+- ✅ Casos conectados para:
+  - usuarios
+  - beneficiarios
+  - repartidores
+- ⚠️ Falta conectar donaciones, distribuciones y reportes
 
 ---
 
-## 📚 Recursos de Aprendizaje
+## Roadmap actualizado
 
-### Spring Boot
-- [Spring Boot Official Docs](https://spring.io/projects/spring-boot)
-- [Spring Data JPA Guide](https://spring.io/guides/gs/accessing-data-jpa/)
-- [Building REST APIs with Spring Boot](https://spring.io/guides/tutorials/rest/)
+### Fase 1 - Backend base
 
-### React
-- [React Official Docs](https://react.dev/)
-- [React Router](https://reactrouter.com/)
-- [Axios Documentation](https://axios-http.com/)
+- ✅ Estructura Spring Boot
+- ✅ Entidades del dominio
+- ✅ Repositorios principales
+- ✅ Servicios con lógica de negocio
+- ✅ Endpoints REST mínimos
 
----
+### Fase 2 - Backend avanzado
 
-## ✅ Checklist de Progreso
+- ✅ Requerimientos especiales principales
+- ✅ Reporte por zonas con mayor número de distribuciones
+- ✅ Soporte explícito para repartidores
+- ⚠️ Pendiente revisar si se requieren endpoints adicionales de distribución
 
-### Backend
-- [ ] Proyecto creado y compilando
-- [ ] Entidades creadas y mapeadas correctamente
-- [ ] Repositorios implementados
-- [ ] Servicios con lógica de negocio
-- [ ] Controladores REST básicos
-- [ ] Validaciones implementadas
-- [ ] Manejo de excepciones
-- [ ] Testing básico
-- [ ] Documentación API
+### Fase 3 - Frontend React
 
-### Frontend
-- [ ] Proyecto React creado
-- [ ] Configuración de rutas
-- [ ] Componentes base
-- [ ] Integración con API
-- [ ] CRUD completo
-- [ ] Filtros y búsquedas
-- [ ] Manejo de errores
-- [ ] UI/UX mejorada
+#### Bloque 1: Fundación técnica
+- ✅ Proyecto React con Vite
+- ✅ React Router
+- ✅ Axios para consumo de API
+- ✅ Layout y navegación principal
+- ✅ Páginas semilla por feature
 
-### General
-- [ ] README completo
-- [ ] Código documentado
-- [ ] Git con commits claros
-- [ ] Proyecto en GitHub
-- [ ] Screenshots/demo
+#### Bloque 2: Casos de uso reales
+- ✅ Alta y edición de usuarios
+- ✅ Alta, edición y filtros de beneficiarios
+- 🔲 Alta y edición de donaciones
+- 🔲 Alta y consulta de distribuciones
+- ✅ Alta y edición de repartidores
+- 🔲 Visualización del reporte por zonas
 
----
+#### Bloque 3: UX y robustez
+- 🔲 Manejo de carga y errores
+- 🔲 Validaciones de formularios
+- 🔲 Filtros y búsquedas pendientes en módulos restantes
+- 🔲 Estados vacíos y feedback visual homogéneo
 
-## 🎯 Resultado Final Esperado
+### Fase 4 - Integración y cierre
 
-Un sistema completo de gestión de donaciones que demuestre:
-- ✅ Conocimiento de Spring Boot y arquitectura REST
-- ✅ Conocimiento de React y desarrollo frontend moderno
-- ✅ Capacidad de integrar sistemas complejos
-- ✅ Buenas prácticas de desarrollo
-- ✅ Proyecto presentable para portfolio/CV
+- 🔲 Validación end-to-end de flujos principales
+- 🔲 Ajustes finales de configuración
+- 🔲 Documentación final y preparación para demo
 
 ---
 
-## 💡 Tips
+## Prioridad técnica recomendada
 
-1. **Commits frecuentes**: Haz commits pequeños y descriptivos
-2. **Prueba cada endpoint**: Usa Postman o similar antes de conectar con React
-3. **Documenta mientras avanzas**: No dejes la documentación para el final
-4. **Pide ayuda cuando te atasques**: Stack Overflow, documentación oficial, etc.
-5. **Disfruta el proceso**: Este proyecto te va a dar mucha experiencia práctica
+1. Conectar ahora:
+   - donaciones
+   - distribuciones
+   - reportes
+2. Después homogeneizar UX y manejo de errores en todo `web/`
+3. Por último refinar visualmente y cerrar demo
 
-¡Éxito con el proyecto! 🚀
+---
+
+## Criterio de implementación
+
+- Primero contratos claros
+- Luego servicios HTTP tipados
+- Después formularios y listados
+- Por último refinamientos visuales
+
+NO al revés. SI NO HAY FUNDACIÓN, LA UI TERMINA SIENDO UN PARCHE.

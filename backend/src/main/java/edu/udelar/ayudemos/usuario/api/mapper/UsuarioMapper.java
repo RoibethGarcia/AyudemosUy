@@ -11,10 +11,12 @@ import org.mapstruct.Mapping;
 public interface UsuarioMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", source = "contrasena")
     Usuario toEntity(UsuarioCreateRequest request);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", ignore = true)
     Usuario toEntity(UsuarioUpdateRequest request);
 
-    Usuario toResponse(Usuario usuario);
+    UsuarioResponse toResponse(Usuario usuario);
 }

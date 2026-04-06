@@ -60,6 +60,7 @@ class UsuarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "secreto123");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,6 +113,7 @@ class UsuarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "");
         body.put("correo", "correo-invalido");
+        body.put("contrasena", "");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +121,8 @@ class UsuarioControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
                 .andExpect(jsonPath("$.details.nombre").exists())
-                .andExpect(jsonPath("$.details.correo").exists());
+                .andExpect(jsonPath("$.details.correo").exists())
+                .andExpect(jsonPath("$.details.contrasena").exists());
     }
 
     @Test
@@ -130,6 +133,7 @@ class UsuarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "secreto123");
 
         mockMvc.perform(post("/usuarios")
                         .contentType(MediaType.APPLICATION_JSON)

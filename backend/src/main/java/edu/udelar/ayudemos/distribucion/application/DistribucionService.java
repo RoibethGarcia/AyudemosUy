@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.application;
+package edu.udelar.ayudemos.distribucion.application;
 
 import edu.udelar.ayudemos.beneficiario.application.exception.BeneficiarioNotFoundException;
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;

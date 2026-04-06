@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.application;
+package edu.udelar.ayudemos.beneficiario.application;
 
 import edu.udelar.ayudemos.beneficiario.application.exception.BeneficiarioNotFoundException;
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
@@ -9,6 +9,7 @@ import edu.udelar.ayudemos.common.exception.EmailAlreadyExistsException;
 import edu.udelar.ayudemos.usuario.infrastructure.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class BeneficiarioService {
 
     private final BeneficiarioRepository beneficiarioRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Beneficiario crearBeneficiario(final Beneficiario beneficiario) {
         validarCorreoUnico(beneficiario.getCorreo(), null);
+        beneficiario.setContrasenaHash(passwordEncoder.encode(beneficiario.getContrasenaHash()));
 
         if (beneficiario.getEstado() == null) {
             beneficiario.setEstado(EstadoBeneficiario.ACTIVO);

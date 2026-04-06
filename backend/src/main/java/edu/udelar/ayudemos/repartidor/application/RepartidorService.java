@@ -8,6 +8,7 @@ import edu.udelar.ayudemos.repartidor.infrastructure.RepartidorRepository;
 import edu.udelar.ayudemos.usuario.infrastructure.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -18,11 +19,13 @@ public class RepartidorService {
 
     private final RepartidorRepository repartidorRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Repartidor crearRepartidor(final Repartidor repartidor) {
         validarCorreoUnico(repartidor.getCorreo(), null);
         validarNumeroLicenciaUnico(repartidor.getNumeroLicencia(), null);
+        repartidor.setContrasenaHash(passwordEncoder.encode(repartidor.getContrasenaHash()));
         return repartidorRepository.save(repartidor);
     }
 

@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.domain;
+package edu.udelar.ayudemos.distribucion.domain;
 
 public enum EstadoDistribucion {
     PENDIENTE,

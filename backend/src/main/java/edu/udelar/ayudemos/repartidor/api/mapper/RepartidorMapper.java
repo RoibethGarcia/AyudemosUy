@@ -11,9 +11,11 @@ import org.mapstruct.Mapping;
 public interface RepartidorMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", source = "contrasena")
     Repartidor toEntity(RepartidorCreateRequest request);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", ignore = true)
     Repartidor toEntity(RepartidorUpdateRequest request);
 
     RepartidorResponse toResponse(Repartidor repartidor);

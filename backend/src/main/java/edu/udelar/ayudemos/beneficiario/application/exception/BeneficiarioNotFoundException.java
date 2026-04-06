@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.application.exception;
+package edu.udelar.ayudemos.beneficiario.application.exception;
 
 public class BeneficiarioNotFoundException extends RuntimeException {
 

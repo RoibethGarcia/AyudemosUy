@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.application;
+package edu.udelar.ayudemos.beneficiario.application;
 
 import edu.udelar.ayudemos.beneficiario.application.exception.BeneficiarioNotFoundException;
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
@@ -14,6 +14,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,6 +36,9 @@ class BeneficiarioServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private BeneficiarioService beneficiarioService;
 
@@ -44,6 +48,7 @@ class BeneficiarioServiceTest {
         beneficiario.setEstado(null);
 
         when(usuarioRepository.findByCorreo(beneficiario.getCorreo())).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("beneficiario123")).thenReturn("HASH-BENEFICIARIO");
         when(beneficiarioRepository.save(any(Beneficiario.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         final Beneficiario creado = beneficiarioService.crearBeneficiario(beneficiario);
@@ -52,6 +57,7 @@ class BeneficiarioServiceTest {
         verify(beneficiarioRepository).save(captor.capture());
         assertThat(creado.getEstado()).isEqualTo(EstadoBeneficiario.ACTIVO);
         assertThat(captor.getValue().getEstado()).isEqualTo(EstadoBeneficiario.ACTIVO);
+        assertThat(creado.getContrasenaHash()).isEqualTo("HASH-BENEFICIARIO");
     }
 
     @Test
@@ -116,6 +122,7 @@ class BeneficiarioServiceTest {
         beneficiario.setId(1L);
         beneficiario.setNombre("Juan Perez");
         beneficiario.setCorreo("juan@example.com");
+        beneficiario.setContrasenaHash("beneficiario123");
         beneficiario.setDireccion("Av. 18 de Julio 1234");
         beneficiario.setFechaNacimiento(LocalDate.of(1990, 1, 15));
         beneficiario.setEstado(EstadoBeneficiario.ACTIVO);

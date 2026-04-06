@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.infrastructure;
+package edu.udelar.ayudemos.distribucion.infrastructure;
 
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
 import edu.udelar.ayudemos.distribucion.domain.Distribucion;

@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.repartidor.infrastructure;
+package edu.udelar.ayudemos.repartidor.infrastructure;
 
 import edu.udelar.ayudemos.repartidor.domain.Repartidor;
 import org.springframework.data.jpa.repository.JpaRepository;

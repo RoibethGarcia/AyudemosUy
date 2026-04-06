@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.donacion.application.exception;
+package edu.udelar.ayudemos.donacion.application.exception;
 
 import java.util.List;
 

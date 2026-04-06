@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,25 @@ class RepartidorServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private RepartidorService repartidorService;
+
+    @Test
+    void crearRepartidor_hasheaLaContrasenaAntesDePersistir() {
+        final Repartidor repartidor = buildRepartidor(1L, "Juan Perez", "juan@example.com", "LIC-001");
+
+        when(usuarioRepository.findByCorreo("juan@example.com")).thenReturn(Optional.empty());
+        when(repartidorRepository.findByNumeroLicencia("LIC-001")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("repartidor123")).thenReturn("HASH-REPARTIDOR");
+        when(repartidorRepository.save(any(Repartidor.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        final Repartidor creado = repartidorService.crearRepartidor(repartidor);
+
+        assertThat(creado.getContrasenaHash()).isEqualTo("HASH-REPARTIDOR");
+    }
 
     @Test
     void crearRepartidor_rechazaCorreoDuplicado() {
@@ -144,6 +162,7 @@ class RepartidorServiceTest {
         repartidor.setNombre(nombre);
         repartidor.setCorreo(correo);
         repartidor.setNumeroLicencia(numeroLicencia);
+        repartidor.setContrasenaHash("repartidor123");
         return repartidor;
     }
 }

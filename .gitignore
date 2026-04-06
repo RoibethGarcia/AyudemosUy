@@ -56,3 +56,8 @@ Thumbs.db
 # Descomentar si no quieres commitear tus credenciales
 # backend/src/main/resources/application.properties
 codex-write-check.tmp
+
+# Archivos auxiliares locales
+Agents.md
+Developer.md
+pdf_extract.txt

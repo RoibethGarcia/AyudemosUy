@@ -15,13 +15,14 @@ class UsuarioMapperTest {
 
     @Test
     void toEntity_desdeCreateRequest_mapeaCamposEsperados() {
-        final UsuarioCreateRequest request = new UsuarioCreateRequest("Juan Perez", "juan@example.com");
+        final UsuarioCreateRequest request = new UsuarioCreateRequest("Juan Perez", "juan@example.com", "secreto123");
 
         final Usuario usuario = usuarioMapper.toEntity(request);
 
         assertThat(usuario.getId()).isNull();
         assertThat(usuario.getNombre()).isEqualTo("Juan Perez");
         assertThat(usuario.getCorreo()).isEqualTo("juan@example.com");
+        assertThat(usuario.getContrasenaHash()).isEqualTo("secreto123");
     }
 
     @Test

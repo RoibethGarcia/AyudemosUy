@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.api.mapper;
+package edu.udelar.ayudemos.distribucion.api.mapper;
 
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
 import edu.udelar.ayudemos.beneficiario.domain.Beneficiario;

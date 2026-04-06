@@ -18,6 +18,7 @@ class RepartidorMapperTest {
         final RepartidorCreateRequest request = new RepartidorCreateRequest(
                 "Juan Perez",
                 "juan@example.com",
+                "repartidor123",
                 "LIC-001"
         );
 
@@ -26,6 +27,7 @@ class RepartidorMapperTest {
         assertThat(repartidor.getId()).isNull();
         assertThat(repartidor.getNombre()).isEqualTo("Juan Perez");
         assertThat(repartidor.getCorreo()).isEqualTo("juan@example.com");
+        assertThat(repartidor.getContrasenaHash()).isEqualTo("repartidor123");
         assertThat(repartidor.getNumeroLicencia()).isEqualTo("LIC-001");
     }
 

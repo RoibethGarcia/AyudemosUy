@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +27,25 @@ class UsuarioServiceTest {
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UsuarioService usuarioService;
+
+    @Test
+    void crearUsuario_hasheaLaContrasenaAntesDePersistir() {
+        final Usuario usuario = buildUsuario(1L, "Juan Perez", "juan@example.com");
+        usuario.setContrasenaHash("secreto123");
+
+        when(usuarioRepository.findByCorreo("juan@example.com")).thenReturn(Optional.empty());
+        when(passwordEncoder.encode("secreto123")).thenReturn("HASH-123");
+        when(usuarioRepository.save(any(Usuario.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        final Usuario creado = usuarioService.crearUsuario(usuario);
+
+        assertThat(creado.getContrasenaHash()).isEqualTo("HASH-123");
+    }
 
     @Test
     void crearUsuario_rechazaCorreoDuplicado() {
@@ -104,6 +122,7 @@ class UsuarioServiceTest {
         usuario.setId(id);
         usuario.setNombre(nombre);
         usuario.setCorreo(correo);
+        usuario.setContrasenaHash("HASH-INICIAL");
         return usuario;
     }
 }

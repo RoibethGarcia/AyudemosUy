@@ -1,6 +1,8 @@
 package edu.udelar.ayudemos.common.error;
 
 import edu.udelar.ayudemos.beneficiario.application.exception.BeneficiarioNotFoundException;
+import edu.udelar.ayudemos.auth.application.exception.InvalidCredentialsException;
+import edu.udelar.ayudemos.auth.application.exception.UnauthenticatedSessionException;
 import edu.udelar.ayudemos.common.exception.EmailAlreadyExistsException;
 import edu.udelar.ayudemos.distribucion.application.exception.DistribucionBusinessException;
 import edu.udelar.ayudemos.distribucion.application.exception.DistribucionNotFoundException;
@@ -80,6 +82,28 @@ public class GlobalExceptionHandler {
         return buildResponse(
                 HttpStatus.CONFLICT,
                 "EMAIL_ALREADY_EXISTS",
+                exception.getMessage(),
+                Map.of()
+        );
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiErrorResponse> handleInvalidCredentials(final InvalidCredentialsException exception) {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "INVALID_CREDENTIALS",
+                exception.getMessage(),
+                Map.of()
+        );
+    }
+
+    @ExceptionHandler(UnauthenticatedSessionException.class)
+    public ResponseEntity<ApiErrorResponse> handleUnauthenticatedSession(
+            final UnauthenticatedSessionException exception
+    ) {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "UNAUTHENTICATED",
                 exception.getMessage(),
                 Map.of()
         );

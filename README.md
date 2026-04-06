@@ -8,7 +8,7 @@ El repositorio ya está organizado como monorepo:
 
 - `backend/` contiene el núcleo actual en Java 21 + Spring Boot
 - `desktop/` permanece como placeholder para una futura app JavaFX
-- `web/` permanece como placeholder para una futura webapp React
+- `web/` ya tiene una base inicial en React 18 + TypeScript + Vite
 
 ## Estructura del repositorio
 
@@ -17,7 +17,7 @@ AyudemosUy/
 +-- backend/
 +-- desktop/
 +-- docs/
-¦   +-- arquitectura/
+|   +-- arquitectura/
 +-- web/
 ```
 
@@ -66,7 +66,8 @@ El backend actual vive en `backend/` y hoy concentra la lógica de negocio expue
 
 #### Features todavía parciales
 
-- **Distribuciones**: todavía no expone búsqueda o reportes temporales más avanzados fuera del ranking por zona
+- **Distribuciones**: todavía no expone búsquedas o reportes temporales más avanzados fuera del ranking por zona
+- **Frontend**: donaciones, distribuciones y reportes siguen en modo semilla; usuarios, beneficiarios y repartidores ya están conectados
 
 > La API `/usuarios` trabaja sobre usuarios base (`TYPE(u) = Usuario`) para no mezclar beneficiarios ni repartidores dentro de un endpoint genérico.
 >
@@ -75,6 +76,26 @@ El backend actual vive en `backend/` y hoy concentra la lógica de negocio expue
 > La API `/repartidores` modela al subtipo explícito y valida unicidad tanto de correo como de número de licencia.
 
 Base URL prevista: `http://localhost:8080/api`
+
+## Web
+
+El módulo `web/` ya no es un placeholder vacío. Hoy incluye:
+
+- React 18 + TypeScript + Vite
+- React Router para navegación principal
+- cliente Axios con `VITE_API_BASE_URL`
+- layout principal y páginas semilla para las features del backend
+- formularios y listados conectados para:
+  - usuarios
+  - beneficiarios
+  - repartidores
+
+### Próximo paso recomendado en frontend
+
+- conectar donaciones
+- conectar distribuciones
+- conectar el reporte por zonas
+- refinar estados de carga, vacíos y feedback visual en toda la UI
 
 ## Comandos del backend
 
@@ -104,12 +125,14 @@ Los valores por defecto están definidos en `backend/src/main/resources/applicat
 
 ## Prioridades recomendadas
 
-### Saneamiento de base
+### Backend
 
 - verificar por ejecución el wrapper de Maven cuando se habilite correr comandos de verificación
-- revisar si conviene exponer filtros o reportes adicionales sobre distribuciones
+- revisar si hacen falta endpoints adicionales de distribución
+- estabilizar el contrato API antes de crecer formularios complejos en web
 
-### Luego
+### Frontend
 
-- estabilizar el contrato API antes de iniciar clientes
-- recién después inicializar `desktop/` y `web/`
+- conectar donaciones, distribuciones y reportes
+- extraer contratos tipados por feature donde siga faltando
+- endurecer manejo de errores y estados de carga

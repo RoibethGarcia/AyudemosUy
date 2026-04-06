@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.usuario.domain;
+package edu.udelar.ayudemos.usuario.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,4 +36,7 @@ public class Usuario {
     @NotBlank(message = "El correo es obligatorio")
     @Column(nullable = false, unique = true)
     private String correo;
+
+    @Column(name = "contrasena_hash")
+    private String contrasenaHash;
 }

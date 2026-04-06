@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.common.exception;
+package edu.udelar.ayudemos.common.exception;
 
 public class EmailAlreadyExistsException extends RuntimeException {
 

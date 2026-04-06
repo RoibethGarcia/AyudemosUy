@@ -62,6 +62,7 @@ class RepartidorControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "repartidor123");
         body.put("numeroLicencia", "LIC-001");
 
         mockMvc.perform(post("/repartidores")
@@ -118,6 +119,7 @@ class RepartidorControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "");
         body.put("correo", "correo-invalido");
+        body.put("contrasena", "");
         body.put("numeroLicencia", "");
 
         mockMvc.perform(post("/repartidores")
@@ -127,6 +129,7 @@ class RepartidorControllerTest {
                 .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
                 .andExpect(jsonPath("$.details.nombre").exists())
                 .andExpect(jsonPath("$.details.correo").exists())
+                .andExpect(jsonPath("$.details.contrasena").exists())
                 .andExpect(jsonPath("$.details.numeroLicencia").exists());
     }
 
@@ -138,6 +141,7 @@ class RepartidorControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "repartidor123");
         body.put("numeroLicencia", "LIC-001");
 
         mockMvc.perform(post("/repartidores")
@@ -155,6 +159,7 @@ class RepartidorControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "repartidor123");
         body.put("numeroLicencia", "LIC-001");
 
         mockMvc.perform(post("/repartidores")
