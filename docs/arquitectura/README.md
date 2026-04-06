@@ -48,7 +48,8 @@ feature/
 ### `donacion`
 
 - Tiene `api/`, `application/`, `domain/` e `infrastructure/`
-- Expone alta de donaciones
+- Expone alta y modificación de donaciones
+- La modificación preserva el subtipo existente y valida el payload según ese subtipo
 - Maneja subtipos `Alimento` y `Articulo` con validaciones de negocio
 
 ### `distribucion`
@@ -58,19 +59,21 @@ feature/
 - Usa `@EntityGraph` para evitar problemas de carga diferida al mapear relaciones hacia la API
 - Depende de `beneficiario`, `donacion` y `repartidor`
 
-### `repartidor`
-
-- Está parcial
-- Hoy solo existen `domain/` e `infrastructure/`
-- Se usa como relación de `distribucion`, pero todavía no tiene casos de uso propios
-
 ### `reportes`
 
-- No existe todavía como feature explícita
-- El reporte de zonas con mayor número de distribuciones sigue pendiente
+- Ya existe como feature API/application
+- Expone el ranking `GET /reportes/zonas-mayor-distribuciones`
+- Se apoya en una consulta agregada sobre `DistribucionRepository`
+
+### `repartidor`
+
+- Ya quedó cerrada como feature backend
+- Expone alta, consulta, listado y modificación
+- Mantiene unicidad global de correo contra `Usuario` y unicidad propia de `numeroLicencia`
+- Sigue siendo relación de `distribucion`, pero ahora también tiene API propia
 
 ## Implicancias para la siguiente etapa
 
-- El backend ya cubre los casos mínimos de usuario, beneficiario, donación y distribución
-- La prioridad técnica pasa a ser consolidar la migración monorepo y cerrar los casos especiales pendientes
-- Antes de iniciar clientes conviene estabilizar el contrato API del backend y decidir el rol futuro de `repartidor`
+- El backend ya cubre los casos mínimos y especiales previstos para usuario, beneficiario, donación, repartidor y reportes de zonas
+- La prioridad técnica pasa a ser endurecer la validación ejecutable del proyecto y revisar si hacen falta endpoints adicionales de distribución
+- Antes de iniciar clientes conviene estabilizar el contrato API del backend

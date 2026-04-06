@@ -50,18 +50,29 @@ El backend actual vive en `backend/` y hoy concentra la lógica de negocio expue
   - `PUT /beneficiarios/{id}`
 - **Donaciones**
   - `POST /donaciones`
+  - `PUT /donaciones/{id}`
 - **Distribuciones**
   - `POST /distribuciones`
   - `GET /distribuciones`
   - `GET /distribuciones/{id}`
   - `PUT /distribuciones/{id}`
+- **Reportes**
+  - `GET /reportes/zonas-mayor-distribuciones`
+- **Repartidores**
+  - `POST /repartidores`
+  - `GET /repartidores`
+  - `GET /repartidores/{id}`
+  - `PUT /repartidores/{id}`
 
 #### Features todavía parciales
 
-- **Repartidores**: existe entidad y repositorio, hoy se usa como relación de distribución, pero todavía no expone casos de uso propios
-- **Reportes**: todavía no existe una feature específica para reportes por zona
+- **Distribuciones**: todavía no expone búsqueda o reportes temporales más avanzados fuera del ranking por zona
 
 > La API `/usuarios` trabaja sobre usuarios base (`TYPE(u) = Usuario`) para no mezclar beneficiarios ni repartidores dentro de un endpoint genérico.
+>
+> La actualización de `/donaciones/{id}` preserva el subtipo existente (`ALIMENTO` o `ARTICULO`); no permite convertir una donación entre subtipos en el mismo endpoint.
+>
+> La API `/repartidores` modela al subtipo explícito y valida unicidad tanto de correo como de número de licencia.
 
 Base URL prevista: `http://localhost:8080/api`
 
@@ -95,12 +106,10 @@ Los valores por defecto están definidos en `backend/src/main/resources/applicat
 
 ### Saneamiento de base
 
-- consolidar en Git la migración al layout de monorepo
 - verificar por ejecución el wrapper de Maven cuando se habilite correr comandos de verificación
-- decidir el alcance futuro del módulo `repartidor`
+- revisar si conviene exponer filtros o reportes adicionales sobre distribuciones
 
 ### Luego
 
-- completar los casos de uso especiales pendientes del backend
 - estabilizar el contrato API antes de iniciar clientes
 - recién después inicializar `desktop/` y `web/`
