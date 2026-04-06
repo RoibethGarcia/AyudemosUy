@@ -3,6 +3,7 @@
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
 import edu.udelar.ayudemos.distribucion.domain.Distribucion;
 import edu.udelar.ayudemos.distribucion.domain.EstadoDistribucion;
+import edu.udelar.ayudemos.reportes.application.ZonaDistribucionReporte;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -37,4 +38,15 @@ public interface DistribucionRepository extends JpaRepository<Distribucion, Long
     @Query("SELECT d FROM Distribucion d WHERE d.fechaEntrega BETWEEN :fechaInicio AND :fechaFin")
     List<Distribucion> findByRangoFechas(@Param("fechaInicio") LocalDate fechaInicio,
                                          @Param("fechaFin") LocalDate fechaFin);
+
+    @Query("""
+            SELECT new edu.udelar.ayudemos.reportes.application.ZonaDistribucionReporte(
+                d.beneficiario.barrio,
+                COUNT(d)
+            )
+            FROM Distribucion d
+            GROUP BY d.beneficiario.barrio
+            ORDER BY COUNT(d) DESC, d.beneficiario.barrio ASC
+            """)
+    List<ZonaDistribucionReporte> obtenerCantidadDistribucionesPorBarrio();
 }

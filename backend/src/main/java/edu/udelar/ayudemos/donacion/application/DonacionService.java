@@ -1,7 +1,9 @@
 package edu.udelar.ayudemos.donacion.application;
 
 import edu.udelar.ayudemos.donacion.application.command.DonacionCreateCommand;
+import edu.udelar.ayudemos.donacion.application.command.DonacionUpdateCommand;
 import edu.udelar.ayudemos.donacion.application.exception.DonacionBusinessException;
+import edu.udelar.ayudemos.donacion.application.exception.DonacionNotFoundException;
 import edu.udelar.ayudemos.donacion.application.exception.NumeroIdentificacionAlreadyExistsException;
 import edu.udelar.ayudemos.donacion.domain.Alimento;
 import edu.udelar.ayudemos.donacion.domain.Articulo;
@@ -20,17 +22,39 @@ public class DonacionService {
 
     @Transactional
     public Donacion crearDonacion(final DonacionCreateCommand command) {
-        validarNumeroIdentificacionUnico(command.numeroIdentificacion());
+        validarNumeroIdentificacionUnico(command.numeroIdentificacion(), null);
         validarCommand(command);
 
         final Donacion donacion = crearEntidad(command);
         return donacionRepository.save(donacion);
     }
 
-    private void validarNumeroIdentificacionUnico(final String numeroIdentificacion) {
-        if (donacionRepository.existsByNumeroIdentificacion(numeroIdentificacion)) {
-            throw new NumeroIdentificacionAlreadyExistsException(numeroIdentificacion);
-        }
+    @Transactional(readOnly = true)
+    public Donacion obtenerPorId(final Long id) {
+        return donacionRepository.findById(id)
+                .orElseThrow(() -> new DonacionNotFoundException(id));
+    }
+
+    @Transactional
+    public Donacion actualizarDonacion(final Long id, final DonacionUpdateCommand command) {
+        final Donacion donacion = obtenerPorId(id);
+
+        validarNumeroIdentificacionUnico(command.numeroIdentificacion(), donacion.getId());
+        validarCommandSegunDonacionActual(command, donacion);
+
+        donacion.setNumeroIdentificacion(command.numeroIdentificacion());
+        donacion.setFechaIngreso(command.fechaIngreso());
+        actualizarCamposEspecificos(donacion, command);
+
+        return donacionRepository.save(donacion);
+    }
+
+    private void validarNumeroIdentificacionUnico(final String numeroIdentificacion, final Long donacionPermitidaId) {
+        donacionRepository.findByNumeroIdentificacion(numeroIdentificacion)
+                .filter(donacion -> donacionPermitidaId == null || !donacion.getId().equals(donacionPermitidaId))
+                .ifPresent(donacion -> {
+                    throw new NumeroIdentificacionAlreadyExistsException(numeroIdentificacion);
+                });
     }
 
     private void validarCommand(final DonacionCreateCommand command) {
@@ -38,43 +62,54 @@ public class DonacionService {
             throw new DonacionBusinessException("El tipo de donacion es obligatorio");
         }
 
-        validarValoresPositivos(command);
+        validarValoresPositivos(command.cantidad(), command.peso());
 
         if (TipoDonacion.ALIMENTO.equals(command.tipo())) {
-            validarAlimento(command);
+            validarAlimento(command.cantidad(), command.peso(), command.dimensiones());
             return;
         }
 
-        validarArticulo(command);
+        validarArticulo(command.cantidad(), command.peso(), command.dimensiones());
     }
 
-    private void validarValoresPositivos(final DonacionCreateCommand command) {
-        if (command.cantidad() != null && command.cantidad() <= 0) {
+    private void validarCommandSegunDonacionActual(final DonacionUpdateCommand command, final Donacion donacion) {
+        validarValoresPositivos(command.cantidad(), command.peso());
+
+        if (donacion instanceof Alimento) {
+            validarAlimento(command.cantidad(), command.peso(), command.dimensiones());
+            return;
+        }
+
+        validarArticulo(command.cantidad(), command.peso(), command.dimensiones());
+    }
+
+    private void validarValoresPositivos(final Integer cantidad, final Double peso) {
+        if (cantidad != null && cantidad <= 0) {
             throw new DonacionBusinessException("La cantidad debe ser mayor a cero");
         }
 
-        if (command.peso() != null && command.peso() <= 0) {
+        if (peso != null && peso <= 0) {
             throw new DonacionBusinessException("El peso debe ser mayor a cero");
         }
     }
 
-    private void validarAlimento(final DonacionCreateCommand command) {
-        if (command.cantidad() == null) {
+    private void validarAlimento(final Integer cantidad, final Double peso, final String dimensiones) {
+        if (cantidad == null) {
             throw new DonacionBusinessException("Un alimento debe indicar cantidad");
         }
 
-        if (command.peso() != null || tieneTexto(command.dimensiones())) {
+        if (peso != null || tieneTexto(dimensiones)) {
             throw new DonacionBusinessException("Un alimento no puede indicar peso ni dimensiones");
         }
     }
 
-    private void validarArticulo(final DonacionCreateCommand command) {
-        final boolean faltanDatos = command.peso() == null || !tieneTexto(command.dimensiones());
+    private void validarArticulo(final Integer cantidad, final Double peso, final String dimensiones) {
+        final boolean faltanDatos = peso == null || !tieneTexto(dimensiones);
         if (faltanDatos) {
             throw new DonacionBusinessException("Un articulo debe indicar peso y dimensiones");
         }
 
-        if (command.cantidad() != null) {
+        if (cantidad != null) {
             throw new DonacionBusinessException("Un articulo no puede indicar cantidad");
         }
     }
@@ -104,6 +139,20 @@ public class DonacionService {
         articulo.setPeso(command.peso());
         articulo.setDimensiones(command.dimensiones());
         return articulo;
+    }
+
+    private void actualizarCamposEspecificos(final Donacion donacion, final DonacionUpdateCommand command) {
+        if (donacion instanceof final Alimento alimento) {
+            alimento.setDescripcion(command.descripcion());
+            alimento.setCantidad(command.cantidad());
+            return;
+        }
+
+        if (donacion instanceof final Articulo articulo) {
+            articulo.setDescripcion(command.descripcion());
+            articulo.setPeso(command.peso());
+            articulo.setDimensiones(command.dimensiones());
+        }
     }
 
     private boolean tieneTexto(final String value) {

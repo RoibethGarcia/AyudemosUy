@@ -2,7 +2,9 @@ package edu.udelar.ayudemos.donacion.api.mapper;
 
 import edu.udelar.ayudemos.donacion.api.dto.DonacionCreateRequest;
 import edu.udelar.ayudemos.donacion.api.dto.DonacionResponse;
+import edu.udelar.ayudemos.donacion.api.dto.DonacionUpdateRequest;
 import edu.udelar.ayudemos.donacion.application.command.DonacionCreateCommand;
+import edu.udelar.ayudemos.donacion.application.command.DonacionUpdateCommand;
 import edu.udelar.ayudemos.donacion.domain.Alimento;
 import edu.udelar.ayudemos.donacion.domain.Articulo;
 import edu.udelar.ayudemos.donacion.domain.Donacion;
@@ -38,6 +40,25 @@ class DonacionMapperTest {
         assertThat(command.descripcion()).isEqualTo("Mesa plegable");
         assertThat(command.peso()).isEqualTo(12.5);
         assertThat(command.dimensiones()).isEqualTo("120x60x75");
+    }
+
+    @Test
+    void toUpdateCommand_mapeaElPayloadDeActualizacion() {
+        final DonacionUpdateRequest request = new DonacionUpdateRequest(
+                "DON-021",
+                LocalDate.of(2026, 4, 3),
+                "Arroz integral",
+                20,
+                null,
+                null
+        );
+
+        final DonacionUpdateCommand command = donacionMapper.toUpdateCommand(request);
+
+        assertThat(command.numeroIdentificacion()).isEqualTo("DON-021");
+        assertThat(command.fechaIngreso()).isEqualTo(LocalDate.of(2026, 4, 3));
+        assertThat(command.descripcion()).isEqualTo("Arroz integral");
+        assertThat(command.cantidad()).isEqualTo(20);
     }
 
     @Test
