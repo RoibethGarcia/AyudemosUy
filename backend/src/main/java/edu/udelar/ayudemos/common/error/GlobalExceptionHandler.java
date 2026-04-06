@@ -7,6 +7,7 @@ import edu.udelar.ayudemos.distribucion.application.exception.DistribucionNotFou
 import edu.udelar.ayudemos.donacion.application.exception.DonacionBusinessException;
 import edu.udelar.ayudemos.donacion.application.exception.DonacionNotFoundException;
 import edu.udelar.ayudemos.donacion.application.exception.NumeroIdentificacionAlreadyExistsException;
+import edu.udelar.ayudemos.repartidor.application.exception.NumeroLicenciaAlreadyExistsException;
 import edu.udelar.ayudemos.repartidor.application.exception.RepartidorNotFoundException;
 import edu.udelar.ayudemos.usuario.application.exception.UsuarioNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -141,6 +142,18 @@ public class GlobalExceptionHandler {
         return buildResponse(
                 HttpStatus.NOT_FOUND,
                 "REPARTIDOR_NOT_FOUND",
+                exception.getMessage(),
+                Map.of()
+        );
+    }
+
+    @ExceptionHandler(NumeroLicenciaAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleNumeroLicenciaAlreadyExists(
+            final NumeroLicenciaAlreadyExistsException exception
+    ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                "NUMERO_LICENCIA_ALREADY_EXISTS",
                 exception.getMessage(),
                 Map.of()
         );
