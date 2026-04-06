@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.api.dto;
+package edu.udelar.ayudemos.distribucion.api.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

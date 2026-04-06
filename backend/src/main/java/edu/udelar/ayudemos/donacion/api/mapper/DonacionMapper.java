@@ -2,7 +2,9 @@ package edu.udelar.ayudemos.donacion.api.mapper;
 
 import edu.udelar.ayudemos.donacion.api.dto.DonacionCreateRequest;
 import edu.udelar.ayudemos.donacion.api.dto.DonacionResponse;
+import edu.udelar.ayudemos.donacion.api.dto.DonacionUpdateRequest;
 import edu.udelar.ayudemos.donacion.application.command.DonacionCreateCommand;
+import edu.udelar.ayudemos.donacion.application.command.DonacionUpdateCommand;
 import edu.udelar.ayudemos.donacion.domain.Alimento;
 import edu.udelar.ayudemos.donacion.domain.Articulo;
 import edu.udelar.ayudemos.donacion.domain.Donacion;
@@ -14,6 +16,8 @@ import org.mapstruct.Mapping;
 public interface DonacionMapper {
 
     DonacionCreateCommand toCreateCommand(DonacionCreateRequest request);
+
+    DonacionUpdateCommand toUpdateCommand(DonacionUpdateRequest request);
 
     @Mapping(target = "tipo", expression = "java(resolveTipo(donacion))")
     @Mapping(target = "descripcion", expression = "java(resolveDescripcion(donacion))")

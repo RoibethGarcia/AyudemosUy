@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.api;
+package edu.udelar.ayudemos.distribucion.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;

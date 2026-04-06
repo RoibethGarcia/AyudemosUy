@@ -5,6 +5,7 @@ import edu.udelar.ayudemos.common.error.GlobalExceptionHandler;
 import edu.udelar.ayudemos.donacion.api.mapper.DonacionMapper;
 import edu.udelar.ayudemos.donacion.application.DonacionService;
 import edu.udelar.ayudemos.donacion.application.exception.DonacionBusinessException;
+import edu.udelar.ayudemos.donacion.application.exception.DonacionNotFoundException;
 import edu.udelar.ayudemos.donacion.application.exception.NumeroIdentificacionAlreadyExistsException;
 import edu.udelar.ayudemos.donacion.domain.Alimento;
 import edu.udelar.ayudemos.donacion.domain.Articulo;
@@ -27,6 +28,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -96,6 +98,42 @@ class DonacionControllerTest {
     }
 
     @Test
+    void putDonacion_devuelve200() throws Exception {
+        when(donacionService.actualizarDonacion(any(Long.class), any())).thenReturn(buildAlimento(5L));
+
+        final Map<String, Object> body = new LinkedHashMap<>();
+        body.put("numeroIdentificacion", "DON-005");
+        body.put("fechaIngreso", "2026-04-05");
+        body.put("descripcion", "Arroz integral");
+        body.put("cantidad", 20);
+
+        mockMvc.perform(put("/donaciones/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(5L))
+                .andExpect(jsonPath("$.tipo").value("ALIMENTO"));
+    }
+
+    @Test
+    void putDonacion_devuelve404SiNoExiste() throws Exception {
+        when(donacionService.actualizarDonacion(any(Long.class), any()))
+                .thenThrow(new DonacionNotFoundException(99L));
+
+        final Map<String, Object> body = new LinkedHashMap<>();
+        body.put("numeroIdentificacion", "DON-099");
+        body.put("fechaIngreso", "2026-04-05");
+        body.put("descripcion", "Arroz integral");
+        body.put("cantidad", 20);
+
+        mockMvc.perform(put("/donaciones/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("DONACION_NOT_FOUND"));
+    }
+
+    @Test
     void postDonacion_devuelve400CuandoLaValidacionFalla() throws Exception {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("tipo", null);
@@ -115,6 +153,23 @@ class DonacionControllerTest {
     }
 
     @Test
+    void putDonacion_devuelve400CuandoLaValidacionFalla() throws Exception {
+        final Map<String, Object> body = new LinkedHashMap<>();
+        body.put("numeroIdentificacion", "");
+        body.put("fechaIngreso", null);
+        body.put("descripcion", "");
+
+        mockMvc.perform(put("/donaciones/5")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
+                .andExpect(jsonPath("$.details.numeroIdentificacion").exists())
+                .andExpect(jsonPath("$.details.fechaIngreso").exists())
+                .andExpect(jsonPath("$.details.descripcion").exists());
+    }
+
+    @Test
     void postDonacion_devuelve400SiLaReglaDeNegocioFalla() throws Exception {
         when(donacionService.crearDonacion(any()))
                 .thenThrow(new DonacionBusinessException("Un articulo debe indicar peso y dimensiones"));
@@ -126,6 +181,24 @@ class DonacionControllerTest {
         body.put("descripcion", "Mesa");
 
         mockMvc.perform(post("/donaciones")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("DONACION_INVALIDA"));
+    }
+
+    @Test
+    void putDonacion_devuelve400SiLaReglaDeNegocioFalla() throws Exception {
+        when(donacionService.actualizarDonacion(any(Long.class), any()))
+                .thenThrow(new DonacionBusinessException("Un alimento no puede indicar peso ni dimensiones"));
+
+        final Map<String, Object> body = new LinkedHashMap<>();
+        body.put("numeroIdentificacion", "DON-005");
+        body.put("fechaIngreso", "2026-04-05");
+        body.put("descripcion", "Arroz integral");
+        body.put("peso", 2.5);
+
+        mockMvc.perform(put("/donaciones/5")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(body)))
                 .andExpect(status().isBadRequest())

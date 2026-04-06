@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.api.mapper;
+package edu.udelar.ayudemos.beneficiario.api.mapper;
 
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioCreateRequest;
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioResponse;
@@ -22,6 +22,7 @@ class BeneficiarioMapperTest {
         final BeneficiarioCreateRequest request = new BeneficiarioCreateRequest(
                 "Juan Perez",
                 "juan@example.com",
+                "beneficiario123",
                 "Av. 18 de Julio 1234",
                 LocalDate.of(1990, 1, 15),
                 EstadoBeneficiario.ACTIVO,
@@ -33,6 +34,7 @@ class BeneficiarioMapperTest {
         assertThat(beneficiario.getId()).isNull();
         assertThat(beneficiario.getNombre()).isEqualTo("Juan Perez");
         assertThat(beneficiario.getCorreo()).isEqualTo("juan@example.com");
+        assertThat(beneficiario.getContrasenaHash()).isEqualTo("beneficiario123");
         assertThat(beneficiario.getDireccion()).isEqualTo("Av. 18 de Julio 1234");
         assertThat(beneficiario.getFechaNacimiento()).isEqualTo(LocalDate.of(1990, 1, 15));
         assertThat(beneficiario.getEstado()).isEqualTo(EstadoBeneficiario.ACTIVO);

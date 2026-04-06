@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.api.mapper;
+package edu.udelar.ayudemos.beneficiario.api.mapper;
 
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioCreateRequest;
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioResponse;
@@ -11,9 +11,11 @@ import org.mapstruct.Mapping;
 public interface BeneficiarioMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", source = "contrasena")
     Beneficiario toEntity(BeneficiarioCreateRequest request);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "contrasenaHash", ignore = true)
     Beneficiario toEntity(BeneficiarioUpdateRequest request);
 
     BeneficiarioResponse toResponse(Beneficiario beneficiario);

@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.domain;
+package edu.udelar.ayudemos.beneficiario.domain;
 
 public enum Barrio {
     CIUDAD_VIEJA,

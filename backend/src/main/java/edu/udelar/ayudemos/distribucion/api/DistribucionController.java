@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.api;
+package edu.udelar.ayudemos.distribucion.api;
 
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
 import edu.udelar.ayudemos.distribucion.api.dto.DistribucionCreateRequest;

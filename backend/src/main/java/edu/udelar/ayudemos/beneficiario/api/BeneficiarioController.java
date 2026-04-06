@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.api;
+package edu.udelar.ayudemos.beneficiario.api;
 
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioCreateRequest;
 import edu.udelar.ayudemos.beneficiario.api.dto.BeneficiarioResponse;

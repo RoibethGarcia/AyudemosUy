@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.donacion.domain;
+package edu.udelar.ayudemos.donacion.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

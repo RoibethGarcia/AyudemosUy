@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.common.error;
+package edu.udelar.ayudemos.common.error;
 
 import java.time.Instant;
 

@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.application.exception;
+package edu.udelar.ayudemos.distribucion.application.exception;
 
 public class DistribucionBusinessException extends RuntimeException {
 

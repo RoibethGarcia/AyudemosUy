@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.distribucion.application.command;
+package edu.udelar.ayudemos.distribucion.application.command;
 
 import edu.udelar.ayudemos.distribucion.domain.EstadoDistribucion;
 

@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.api.dto;
+package edu.udelar.ayudemos.beneficiario.api.dto;
 
 import edu.udelar.ayudemos.beneficiario.domain.Barrio;
 import edu.udelar.ayudemos.beneficiario.domain.EstadoBeneficiario;

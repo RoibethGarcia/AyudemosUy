@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.beneficiario.api;
+package edu.udelar.ayudemos.beneficiario.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.udelar.ayudemos.beneficiario.api.mapper.BeneficiarioMapper;
@@ -64,6 +64,7 @@ class BeneficiarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "beneficiario123");
         body.put("direccion", "Av. 18 de Julio 1234");
         body.put("fechaNacimiento", "1990-01-15");
         body.put("barrio", "CENTRO");
@@ -148,6 +149,7 @@ class BeneficiarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "");
         body.put("correo", "correo-invalido");
+        body.put("contrasena", "");
         body.put("direccion", "");
         body.put("fechaNacimiento", null);
         body.put("barrio", null);
@@ -158,7 +160,8 @@ class BeneficiarioControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code").value("VALIDATION_ERROR"))
                 .andExpect(jsonPath("$.details.nombre").exists())
-                .andExpect(jsonPath("$.details.correo").exists());
+                .andExpect(jsonPath("$.details.correo").exists())
+                .andExpect(jsonPath("$.details.contrasena").exists());
     }
 
     @Test
@@ -169,6 +172,7 @@ class BeneficiarioControllerTest {
         final Map<String, Object> body = new LinkedHashMap<>();
         body.put("nombre", "Juan Perez");
         body.put("correo", "juan@example.com");
+        body.put("contrasena", "beneficiario123");
         body.put("direccion", "Av. 18 de Julio 1234");
         body.put("fechaNacimiento", "1990-01-15");
         body.put("barrio", "CENTRO");

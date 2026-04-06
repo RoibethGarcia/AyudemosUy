@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.donacion.infrastructure;
+package edu.udelar.ayudemos.donacion.infrastructure;
 
 import edu.udelar.ayudemos.donacion.domain.Donacion;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -6,6 +6,7 @@ import edu.udelar.ayudemos.usuario.domain.Usuario;
 import edu.udelar.ayudemos.usuario.infrastructure.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Usuario crearUsuario(final Usuario usuario) {
         validarCorreoUnico(usuario.getCorreo(), null);
+        usuario.setContrasenaHash(passwordEncoder.encode(usuario.getContrasenaHash()));
         return usuarioRepository.save(usuario);
     }
 

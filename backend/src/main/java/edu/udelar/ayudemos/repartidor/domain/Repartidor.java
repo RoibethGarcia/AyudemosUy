@@ -1,4 +1,4 @@
-﻿package edu.udelar.ayudemos.repartidor.domain;
+package edu.udelar.ayudemos.repartidor.domain;
 
 import edu.udelar.ayudemos.usuario.domain.Usuario;
 import jakarta.persistence.Column;
